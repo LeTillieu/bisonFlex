@@ -1,0 +1,46 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+#textarea, #coloredText{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-size: 15px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#coloredText{
+    background-color:transparent;
+}
+mark{
+    background-color: transparent;
+}
+
+
+si{
+    color: yellowgreen;
+}
+
+loop{
+    color: yellow;
+}
+
+func{
+    color: rgb(67, 155, 150);
+}
+
+plot{
+    color: darkgoldenrod;
+}
+
+parameter{
+    color: rgb(24, 109, 143);
+}
+
+symbol{
+    color: grey;
+}

@@ -1,0 +1,2 @@
+borne  1 2 100 x
+tracer(2*x-2+x+3)
