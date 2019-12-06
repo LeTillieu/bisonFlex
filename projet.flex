@@ -16,24 +16,29 @@ using namespace std;
 %}
 %%
 
-[0-9]+(\.[0-9]*)?([Ee][0-9]+)?	{ yylval.valeur = atof(yytext); return NUMBER; }
+[0-9]+(\.[0-9]*)?	{ yylval.valeur = atof(yytext); return NUMBER; }
 
 "Tant que"|"tant que"|"TANT QUE"    { return REPEAT; }
 "Pour"|"pour"|"POUR"                {return FOR;}
 "fonction"|"Fonction"|"FONCTION"    {return FUNC;}
 "tracer"|"Tracer"|"TRACER"          {return PLOT;}
-"AFFICHER"|"Afficher"|"afficher"    {return PRINT;}
 "borne"|"BORNE"|"Borne"             {return LIM;}
+"entree"|"ENTREE"|"Entree"          {return IN;} 
+"sorti"|"Sorti"|"SORTI"       {return OUTPUT;} 
+"e"|"EXP"|"Exp"|"exp"         {return EXP;}
+"cos"|"COS"|"Cos"              {return COS;}
+"sin"|"SIN"|"Sin"              {return SIN;}
+"tan"|"TAN"|"Tan"              {return TAN;}
+"retourne"|"Retourne"|"RETOURNE"  {return RETFUNC;}
 
 "=="                                {return EQUAL;}
 "!="                                {return DIFF;}
 ">="                                {return SUPEQ;}
 "<="                                {return INFEQ;}
 
-si|SI|Si 			{return SI;}
-Sinon|sinon|SINON	{return SINON;}
+"si"|"SI"|"Si" 			{return SI;}
+"Sinon"|"sinon"|"SINON"	{return SINON;}
 
-\(([ \n\t\r]*[0-9A-Za-z_]*[ \n\t\r]*\,?)*\)    {strcpy(yylval.nom,yytext); return PARAM; }
 [A-Za-z_][0-9A-Za-z_]*          { strcpy(yylval.nom,yytext); return IDENTIFIER; }
 
 \r\n  							{  return '\n'; }	

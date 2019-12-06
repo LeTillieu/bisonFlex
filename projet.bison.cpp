@@ -69,25 +69,30 @@
   #include <string>
   #include <vector>  
   #include <algorithm>
-  #include"matplotlibcpp.h"
+  #include <cmath> 
+  #include <SFML/OpenGL.hpp>
+  #include <SFML/Graphics.hpp>
   using namespace std;
   extern FILE *yyin;
   extern int yylex ();
   int yyerror(char *s) { printf("%s\n", s); }
-
+  sf::RenderWindow window(sf::VideoMode(100, 100), "My window");
   map<string, double> variables;
   map<string, vector<double>> functions;      //ic of start and end of each func
   map<string, vector<string>> funcParameters; //name of parameters of each func
   map<string, vector<string>> funcReturn; //name of return of each func
   vector<map<string, double>> varFunc; //variables to reset after function
   map<int, pair<double, double>> forLoop;
+vector<string> funcNames;
   vector<double> funcPlotX;
   vector<double> funcPlotY;
   double minX, maxX, step;
   string plotVarName;
+
   vector<int> toGoAfterFunc;
   vector<pair<int,string>> instructions;
   int ic = 0;   // compteur instruction 
+
 
   void ins(int c, string d) { instructions.push_back(make_pair(c, d)); ic++;};
   bool is_number(const std::string& s)
@@ -105,7 +110,7 @@
   } t_adresse; 
 
 
-#line 109 "projet.bison.cpp" /* yacc.c:339  */
+#line 114 "projet.bison.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -172,7 +177,16 @@ extern int yydebug;
     FUNCEXP = 287,
     PLOT = 288,
     PRINT = 289,
-    LIM = 290
+    LIM = 290,
+    PLOTGRAPH = 291,
+    PRINTFUNC = 292,
+    EXP = 293,
+    SIN = 294,
+    COS = 295,
+    TAN = 296,
+    IN = 297,
+    OUTPUT = 298,
+    RETFUNC = 299
   };
 #endif
 
@@ -181,13 +195,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 45 "projet.bison" /* yacc.c:355  */
+#line 50 "projet.bison" /* yacc.c:355  */
 
   double valeur;
   char nom[50];
   t_adresse adresse;
 
-#line 191 "projet.bison.cpp" /* yacc.c:355  */
+#line 205 "projet.bison.cpp" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -204,7 +218,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 208 "projet.bison.cpp" /* yacc.c:358  */
+#line 222 "projet.bison.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -446,21 +460,21 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   180
+#define YYLAST   259
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  50
+#define YYNTOKENS  59
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  27
+#define YYNNTS  28
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  50
+#define YYNRULES  61
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  114
+#define YYNSTATES  130
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   290
+#define YYMAXUTOK   299
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -470,18 +484,18 @@ union yyalloc
 static const yytype_uint8 yytranslate[] =
 {
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      41,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      50,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      42,    43,    39,    37,    49,    38,     2,    40,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,    45,     2,
-      48,    46,    47,     2,     2,     2,     2,     2,     2,     2,
+      51,    52,    48,    46,    54,    47,     2,    49,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      57,    55,    56,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,    58,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,    22,     2,    44,     2,     2,     2,     2,
+       2,     2,     2,    22,     2,    53,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -498,19 +512,20 @@ static const yytype_uint8 yytranslate[] =
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    23,    24,    25,
       26,    27,    28,    29,    30,    31,    32,    33,    34,    35,
-      36
+      36,    37,    38,    39,    40,    41,    42,    43,    44,    45
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    91,    91,    92,    95,    96,    97,    98,    99,   100,
-     101,   102,   103,    96,   105,   106,   107,   108,   105,   111,
-     112,   113,   114,   111,   116,   117,   118,   116,   121,   122,
-     123,   124,   123,   126,   127,   127,   129,   132,   133,   134,
-     135,   136,   137,   139,   140,   141,   142,   143,   144,   145,
-     146
+       0,   105,   105,   106,   109,   110,   111,   112,   113,   114,
+     115,   116,   109,   118,   119,   120,   121,   118,   124,   125,
+     126,   127,   124,   129,   130,   131,   129,   134,   135,   136,
+     137,   136,   139,   139,   141,   142,   143,   144,   145,   148,
+     149,   150,   151,   152,   153,   155,   156,   157,   158,   159,
+     160,   161,   162,   163,   164,   165,   166,   167,   168,   173,
+     174,   175
 };
 #endif
 
@@ -523,12 +538,13 @@ static const char *const yytname[] =
   "SI", "ALORS", "SINON", "FINSI", "REPEAT", "JMP", "JNZ", "JNZINV", "OUT",
   "SUP", "INF", "EQUAL", "DIFF", "SUPEQ", "INFEQ", "'{'", "FUNC", "PARAM",
   "ADDPARAM", "ADDRET", "EXECFUNC", "FUNCNAME", "RESETFUNC", "FOR",
-  "GETMAXFOR", "DEFFUNC", "FUNCEXP", "PLOT", "PRINT", "LIM", "'+'", "'-'",
-  "'*'", "'/'", "'\\n'", "'('", "')'", "'}'", "':'", "'='", "'>'", "'<'",
-  "','", "$accept", "bloc", "instruction", "$@1", "$@2", "$@3", "$@4",
-  "$@5", "$@6", "$@7", "$@8", "$@9", "$@10", "$@11", "$@12", "$@13",
-  "$@14", "$@15", "$@16", "$@17", "$@18", "$@19", "$@20", "$@21", "$@22",
-  "condition", "expression", YY_NULLPTR
+  "GETMAXFOR", "DEFFUNC", "FUNCEXP", "PLOT", "PRINT", "LIM", "PLOTGRAPH",
+  "PRINTFUNC", "EXP", "SIN", "COS", "TAN", "IN", "OUTPUT", "RETFUNC",
+  "'+'", "'-'", "'*'", "'/'", "'\\n'", "'('", "')'", "'}'", "','", "'='",
+  "'>'", "'<'", "'^'", "$accept", "bloc", "instruction", "$@1", "$@2",
+  "$@3", "$@4", "$@5", "$@6", "$@7", "$@8", "$@9", "$@10", "$@11", "$@12",
+  "$@13", "$@14", "$@15", "$@16", "$@17", "$@18", "$@19", "$@20", "$@21",
+  "$@22", "condition", "expression", "setParam", YY_NULLPTR
 };
 #endif
 
@@ -540,17 +556,18 @@ static const yytype_uint16 yytoknum[] =
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   123,   277,   278,   279,   280,   281,   282,   283,
-     284,   285,   286,   287,   288,   289,   290,    43,    45,    42,
-      47,    10,    40,    41,   125,    58,    61,    62,    60,    44
+     284,   285,   286,   287,   288,   289,   290,   291,   292,   293,
+     294,   295,   296,   297,   298,   299,    43,    45,    42,    47,
+      10,    40,    41,   125,    44,    61,    62,    60,    94
 };
 # endif
 
-#define YYPACT_NINF -37
+#define YYPACT_NINF -52
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-37)))
+  (!!((Yystate) == (-52)))
 
-#define YYTABLE_NINF -32
+#define YYTABLE_NINF -31
 
 #define yytable_value_is_error(Yytable_value) \
   0
@@ -559,18 +576,19 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     -37,   105,   -37,   -14,   -37,   -37,   -37,    -1,   -36,   -37,
-      14,    14,   -32,   -37,    14,   -29,   -27,   -37,    -5,    16,
-     -20,   -37,   -37,    14,   131,     4,   -37,   131,    14,    14,
-      84,   -22,    -7,    14,    -4,    14,    14,    14,    14,    14,
-       4,    -3,   111,    11,    13,    31,    14,    43,   -37,   -28,
-     -28,    15,    15,   131,    21,   -37,    14,    14,    14,    14,
-      14,    14,   -37,   -37,    40,   107,   -37,   -37,    41,   131,
-     131,   131,   131,   131,   131,    50,    62,   -37,    14,   -37,
-     -37,   -37,   -37,   124,   -37,   -37,    33,    67,   -37,    84,
-      84,    14,    32,    55,    35,    52,    44,   -37,   -37,   -37,
-     -37,   -37,   -37,    75,    84,   -37,    54,    72,   -37,   -37,
-     -37,    84,    56,   -37
+     -52,   156,   -52,    82,   -52,   -52,   -52,    -3,   -42,   -52,
+       2,     0,     2,     2,   -31,   -52,     2,     2,     2,     2,
+       2,     2,     2,   -18,   -19,   -14,   -52,   -13,    29,     2,
+      62,   -52,   -18,   -18,   -52,   -18,   -18,   -18,   -18,   -18,
+     157,   -18,     2,     2,     2,     2,     2,     2,     2,     2,
+     132,    35,    -9,   -18,    62,   -52,   -38,   -38,   -51,   -51,
+     -18,   -18,    -6,   175,    10,     1,   -52,   -40,     2,     9,
+     -52,     2,     2,     2,     2,     2,     2,   -52,   -52,    39,
+      35,   201,   -52,    42,   -18,   -18,   -18,   -18,   -18,   -18,
+      46,    58,   -52,    16,     2,   -52,   -52,   -52,   -52,   188,
+     -52,   -52,    20,   108,   -52,   132,   132,     2,    30,    60,
+      31,    34,    36,   -52,   -52,   -52,   -52,   -52,   -52,    80,
+     132,   -52,    37,    69,   -52,   -52,   -52,   132,    40,   -52
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -578,123 +596,141 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       3,    28,     1,     0,     5,    14,    19,     0,     0,    34,
-       0,     0,     0,    33,     0,     0,     0,     3,     0,     0,
-       0,    49,    50,     0,     4,     0,     2,    29,     0,     0,
-      20,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    48,    43,
-      44,    45,    46,    47,     0,     6,     0,     0,     0,     0,
-       0,     0,    15,    21,     0,     0,    35,    36,     0,    39,
-      40,    41,    42,    37,    38,     0,     0,    30,     0,     7,
-      16,    22,     3,     0,     3,     3,     0,    28,    24,     8,
-      17,     0,     0,     0,     0,     0,     0,    32,    25,     9,
-      18,    23,     3,     0,    26,    10,     0,     0,    27,    11,
-       3,    12,     0,    13
+       3,    27,     1,     0,     4,    13,    18,     0,     0,    32,
+       0,     0,     0,     0,     0,    52,    53,     0,     0,     0,
+       0,     0,     0,    38,     0,     0,     3,     0,     0,     0,
+       0,    35,    36,    37,     2,    58,    54,    55,    56,    57,
+       0,    28,     0,     0,     0,     0,     0,     0,     0,     0,
+      19,    61,     0,    33,     0,    51,    45,    46,    47,    48,
+      50,    49,     0,     0,     0,     0,    60,     0,     0,     0,
+       5,     0,     0,     0,     0,     0,     0,    14,    20,     0,
+      61,     0,    34,     0,    41,    42,    43,    44,    39,    40,
+       0,     0,    29,    59,     0,     6,    15,    21,     3,     0,
+       3,     3,     0,    27,    23,     7,    16,     0,     0,     0,
+       0,     0,     0,    31,    24,     8,    17,    22,     3,     0,
+      25,     9,     0,     0,    26,    10,     3,    11,     0,    12
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -37,   -17,   -37,   -37,   -37,   -37,   -37,   -37,   -37,   -37,
-     -37,   -37,   -37,   -37,   -37,   -37,   -37,   -37,   -37,   -37,
-     -37,   -37,   -37,   -37,   -37,   -25,    -9
+     -52,   -26,   -52,   -52,   -52,   -52,   -52,   -52,   -52,   -52,
+     -52,   -52,   -52,   -52,   -52,   -52,   -52,   -52,   -52,   -52,
+     -52,   -52,   -52,   -52,   -52,   -47,     5,    14
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int8 yydefgoto[] =
+static const yytype_int16 yydefgoto[] =
 {
-      -1,     1,    12,    15,    68,    84,    94,   103,   107,   110,
-     112,    16,    75,    85,    95,    17,    44,    76,    86,    93,
-     102,   106,    82,    92,    20,    41,    42
+      -1,     1,    14,    24,    83,   100,   110,   119,   123,   126,
+     128,    25,    90,   101,   111,    26,    65,    91,   102,   109,
+     118,   122,    98,   108,    29,    62,    63,    67
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
      positive, shift that token.  If negative, reduce the rule whose
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_int16 yytable[] =
 {
-      30,    24,    25,    18,    43,    27,    19,    21,    22,    26,
-      13,    37,    38,    28,    34,    29,    40,    21,    22,    31,
-      32,    39,    33,    45,    47,    67,    49,    50,    51,    52,
-      53,    54,    14,    35,    36,    37,    38,    65,    46,    48,
-      55,    35,    36,    37,    38,    39,    23,    69,    70,    71,
-      72,    73,    74,    39,    62,    64,    23,    63,    35,    36,
-      37,    38,    77,    79,    39,    87,    96,    89,    90,    83,
-      39,     3,    80,    81,     4,    91,    97,    98,     5,    99,
-      35,    36,    37,    38,   105,   104,    66,   101,     3,     6,
-       7,     4,    39,   111,   109,     5,   100,     8,   108,     0,
-     113,     9,    10,    11,     0,     2,     6,     7,     0,     3,
-       0,   -31,     4,     0,     8,     0,     5,     0,     9,    10,
-      11,     0,     0,     0,     0,   -28,     0,     6,     7,    56,
-      57,    58,    59,     0,     0,     8,     0,     0,     0,     9,
-      10,    11,     0,     0,    35,    36,    37,    38,    35,    36,
-      37,    38,    78,     0,     0,     0,    39,     0,    60,    61,
-      39,    35,    36,    37,    38,     0,     0,    88,    35,    36,
-      37,    38,     0,    39,     0,     0,     0,     0,     0,     0,
-      39
+      50,    27,    64,    46,    31,    15,    16,    47,    23,    28,
+      44,    45,    79,    82,    80,    30,    46,    32,    33,    34,
+      47,    35,    36,    37,    38,    39,    40,    41,    42,    43,
+      44,    45,    48,    52,    53,    54,    46,    49,    51,    66,
+      47,    17,    18,    19,    20,    68,    70,    56,    57,    58,
+      59,    60,    61,    21,    78,    42,    43,    44,    45,    69,
+     112,    92,    77,    46,    95,    15,    16,    47,    96,    97,
+      80,   107,   103,    81,   105,   106,    84,    85,    86,    87,
+      88,    89,   114,   113,   115,    15,    16,   116,   117,   121,
+     124,   125,   120,   129,    93,     0,     0,     0,     0,    99,
+     127,    17,    18,    19,    20,     0,     0,     0,    42,    43,
+      44,    45,     3,    21,     0,     4,    46,     0,     0,     5,
+      47,    17,    18,    19,    20,     0,     0,     0,     0,     0,
+       6,     7,     0,    21,     0,     0,     3,    22,     8,     4,
+       0,     0,     9,     5,    10,     0,     0,     0,     0,     0,
+       0,    11,    12,    13,     6,     7,     2,     0,     0,     0,
+       3,   -30,     8,     4,     0,     0,     9,     5,    10,     0,
+       0,     0,     0,     0,     0,    11,    12,    13,     6,     7,
+       0,     0,   -27,     0,     0,     0,     8,     0,     0,     0,
+       9,     0,    10,    71,    72,    73,    74,     0,     0,    11,
+      12,    13,     0,    42,    43,    44,    45,     0,     0,    55,
+       0,    46,     0,     0,     0,    47,     0,     0,     0,     0,
+       0,    42,    43,    44,    45,     0,     0,     0,     0,    46,
+       0,    75,    76,    47,    42,    43,    44,    45,     0,     0,
+     104,     0,    46,     0,     0,     0,    47,    42,    43,    44,
+      45,     0,     0,     0,     0,    94,     0,     0,     0,    47
 };
 
 static const yytype_int8 yycheck[] =
 {
-      17,    10,    11,     4,    29,    14,    42,     3,     4,    41,
-      24,    39,    40,    42,    23,    42,    25,     3,     4,    24,
-       4,    49,    42,    45,    33,     4,    35,    36,    37,    38,
-      39,    40,    46,    37,    38,    39,    40,    46,    45,    43,
-      43,    37,    38,    39,    40,    49,    42,    56,    57,    58,
-      59,    60,    61,    49,    43,    24,    42,    44,    37,    38,
-      39,    40,    22,    22,    49,    82,    91,    84,    85,    78,
-      49,     4,    22,    11,     7,    42,    44,    22,    11,    44,
-      37,    38,    39,    40,     9,   102,    43,    43,     4,    22,
-      23,     7,    49,   110,    22,    11,    44,    30,    44,    -1,
-      44,    34,    35,    36,    -1,     0,    22,    23,    -1,     4,
-      -1,    44,     7,    -1,    30,    -1,    11,    -1,    34,    35,
-      36,    -1,    -1,    -1,    -1,    41,    -1,    22,    23,    18,
-      19,    20,    21,    -1,    -1,    30,    -1,    -1,    -1,    34,
-      35,    36,    -1,    -1,    37,    38,    39,    40,    37,    38,
-      39,    40,    45,    -1,    -1,    -1,    49,    -1,    47,    48,
-      49,    37,    38,    39,    40,    -1,    -1,    43,    37,    38,
-      39,    40,    -1,    49,    -1,    -1,    -1,    -1,    -1,    -1,
-      49
+      26,     4,    49,    54,     4,     3,     4,    58,     3,    51,
+      48,    49,    52,     4,    54,    10,    54,    12,    13,    50,
+      58,    16,    17,    18,    19,    20,    21,    22,    46,    47,
+      48,    49,    51,     4,    29,    30,    54,    51,    51,     4,
+      58,    39,    40,    41,    42,    54,    52,    42,    43,    44,
+      45,    46,    47,    51,    53,    46,    47,    48,    49,    54,
+     107,    22,    52,    54,    22,     3,     4,    58,    22,    11,
+      54,    51,    98,    68,   100,   101,    71,    72,    73,    74,
+      75,    76,    22,    53,    53,     3,     4,    53,    52,     9,
+      53,    22,   118,    53,    80,    -1,    -1,    -1,    -1,    94,
+     126,    39,    40,    41,    42,    -1,    -1,    -1,    46,    47,
+      48,    49,     4,    51,    -1,     7,    54,    -1,    -1,    11,
+      58,    39,    40,    41,    42,    -1,    -1,    -1,    -1,    -1,
+      22,    23,    -1,    51,    -1,    -1,     4,    55,    30,     7,
+      -1,    -1,    34,    11,    36,    -1,    -1,    -1,    -1,    -1,
+      -1,    43,    44,    45,    22,    23,     0,    -1,    -1,    -1,
+       4,    53,    30,     7,    -1,    -1,    34,    11,    36,    -1,
+      -1,    -1,    -1,    -1,    -1,    43,    44,    45,    22,    23,
+      -1,    -1,    50,    -1,    -1,    -1,    30,    -1,    -1,    -1,
+      34,    -1,    36,    18,    19,    20,    21,    -1,    -1,    43,
+      44,    45,    -1,    46,    47,    48,    49,    -1,    -1,    52,
+      -1,    54,    -1,    -1,    -1,    58,    -1,    -1,    -1,    -1,
+      -1,    46,    47,    48,    49,    -1,    -1,    -1,    -1,    54,
+      -1,    56,    57,    58,    46,    47,    48,    49,    -1,    -1,
+      52,    -1,    54,    -1,    -1,    -1,    58,    46,    47,    48,
+      49,    -1,    -1,    -1,    -1,    54,    -1,    -1,    -1,    58
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    51,     0,     4,     7,    11,    22,    23,    30,    34,
-      35,    36,    52,    24,    46,    53,    61,    65,     4,    42,
-      74,     3,     4,    42,    76,    76,    41,    76,    42,    42,
-      51,    24,     4,    42,    76,    37,    38,    39,    40,    49,
-      76,    75,    76,    75,    66,    45,    45,    76,    43,    76,
-      76,    76,    76,    76,    76,    43,    18,    19,    20,    21,
-      47,    48,    43,    44,    24,    76,    43,     4,    54,    76,
-      76,    76,    76,    76,    76,    62,    67,    22,    45,    22,
-      22,    11,    72,    76,    55,    63,    68,    51,    43,    51,
-      51,    42,    73,    69,    56,    64,    75,    44,    22,    44,
-      44,    43,    70,    57,    51,     9,    71,    58,    44,    22,
-      59,    51,    60,    44
+       0,    60,     0,     4,     7,    11,    22,    23,    30,    34,
+      36,    43,    44,    45,    61,     3,     4,    39,    40,    41,
+      42,    51,    55,    85,    62,    70,    74,     4,    51,    83,
+      85,     4,    85,    85,    50,    85,    85,    85,    85,    85,
+      85,    85,    46,    47,    48,    49,    54,    58,    51,    51,
+      60,    51,     4,    85,    85,    52,    85,    85,    85,    85,
+      85,    85,    84,    85,    84,    75,     4,    86,    54,    85,
+      52,    18,    19,    20,    21,    56,    57,    52,    53,    52,
+      54,    85,     4,    63,    85,    85,    85,    85,    85,    85,
+      71,    76,    22,    86,    54,    22,    22,    11,    81,    85,
+      64,    72,    77,    60,    52,    60,    60,    51,    82,    78,
+      65,    73,    84,    53,    22,    53,    53,    52,    79,    66,
+      60,     9,    80,    67,    53,    22,    68,    60,    69,    53
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    50,    51,    51,    52,    53,    54,    55,    56,    57,
-      58,    59,    60,    52,    61,    62,    63,    64,    52,    65,
-      66,    67,    68,    52,    69,    70,    71,    52,    52,    52,
-      72,    73,    52,    52,    74,    52,    52,    75,    75,    75,
-      75,    75,    75,    76,    76,    76,    76,    76,    76,    76,
-      76
+       0,    59,    60,    60,    62,    63,    64,    65,    66,    67,
+      68,    69,    61,    70,    71,    72,    73,    61,    74,    75,
+      76,    77,    61,    78,    79,    80,    61,    61,    61,    81,
+      82,    61,    83,    61,    61,    61,    61,    61,    61,    84,
+      84,    84,    84,    84,    84,    85,    85,    85,    85,    85,
+      85,    85,    85,    85,    85,    85,    85,    85,    85,    86,
+      86,    86
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     3,     0,     2,     0,     0,     0,     0,     0,
-       0,     0,     0,    19,     0,     0,     0,     0,    11,     0,
-       0,     0,     0,    11,     0,     0,     0,    14,     0,     3,
-       0,     0,    10,     2,     0,     5,     5,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,     3,     3,     1,
-       1
+       0,     2,     3,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,    19,     0,     0,     0,     0,    11,     0,     0,
+       0,     0,    11,     0,     0,     0,    14,     0,     3,     0,
+       0,    10,     0,     3,     5,     2,     2,     2,     2,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     1,     1,     2,     2,     2,     2,     2,     3,
+       1,     0
 };
 
 
@@ -1371,283 +1407,343 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 95 "projet.bison" /* yacc.c:1646  */
-    {ins(OUT, "");}
-#line 1377 "projet.bison.cpp" /* yacc.c:1646  */
-    break;
-
-  case 5:
-#line 96 "projet.bison" /* yacc.c:1646  */
+#line 109 "projet.bison" /* yacc.c:1646  */
     {}
-#line 1383 "projet.bison.cpp" /* yacc.c:1646  */
-    break;
-
-  case 6:
-#line 97 "projet.bison" /* yacc.c:1646  */
-    {(yyvsp[-4].adresse).ic_false = ic; ins(JNZ, "0"); }
-#line 1389 "projet.bison.cpp" /* yacc.c:1646  */
-    break;
-
-  case 7:
-#line 98 "projet.bison" /* yacc.c:1646  */
-    {}
-#line 1395 "projet.bison.cpp" /* yacc.c:1646  */
-    break;
-
-  case 8:
-#line 99 "projet.bison" /* yacc.c:1646  */
-    {}
-#line 1401 "projet.bison.cpp" /* yacc.c:1646  */
-    break;
-
-  case 9:
-#line 100 "projet.bison" /* yacc.c:1646  */
-    {}
-#line 1407 "projet.bison.cpp" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 101 "projet.bison" /* yacc.c:1646  */
-    {(yyvsp[-12].adresse).ic_goto = ic; ins(JMP, "0");instructions[(yyvsp[-12].adresse).ic_false].second = to_string(ic);}
 #line 1413 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 11:
-#line 102 "projet.bison" /* yacc.c:1646  */
-    {}
+  case 5:
+#line 110 "projet.bison" /* yacc.c:1646  */
+    {(yyvsp[-4].adresse).ic_false = ic; ins(JNZ, "0"); }
 #line 1419 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 12:
-#line 103 "projet.bison" /* yacc.c:1646  */
+  case 6:
+#line 111 "projet.bison" /* yacc.c:1646  */
     {}
 #line 1425 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 13:
-#line 104 "projet.bison" /* yacc.c:1646  */
-    {instructions[(yyvsp[-18].adresse).ic_goto].second = to_string(ic);}
+  case 7:
+#line 112 "projet.bison" /* yacc.c:1646  */
+    {}
 #line 1431 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 14:
-#line 105 "projet.bison" /* yacc.c:1646  */
-    {(yyvsp[0].adresse).ic_goto = ic;}
+  case 8:
+#line 113 "projet.bison" /* yacc.c:1646  */
+    {}
 #line 1437 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 15:
-#line 106 "projet.bison" /* yacc.c:1646  */
-    {(yyvsp[-4].adresse).ic_false = ic; ins(JNZ, "0");}
+  case 9:
+#line 114 "projet.bison" /* yacc.c:1646  */
+    {(yyvsp[-12].adresse).ic_goto = ic; ins(JMP, "0");instructions[(yyvsp[-12].adresse).ic_false].second = to_string(ic);}
 #line 1443 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 16:
-#line 107 "projet.bison" /* yacc.c:1646  */
+  case 10:
+#line 115 "projet.bison" /* yacc.c:1646  */
     {}
 #line 1449 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 17:
-#line 108 "projet.bison" /* yacc.c:1646  */
+  case 11:
+#line 116 "projet.bison" /* yacc.c:1646  */
     {}
 #line 1455 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 18:
-#line 109 "projet.bison" /* yacc.c:1646  */
-    {instructions[(yyvsp[-10].adresse).ic_false].second = to_string(ic+1); ins(JMP, to_string((yyvsp[-10].adresse).ic_goto));}
+  case 12:
+#line 117 "projet.bison" /* yacc.c:1646  */
+    {instructions[(yyvsp[-18].adresse).ic_goto].second = to_string(ic);}
 #line 1461 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 19:
-#line 111 "projet.bison" /* yacc.c:1646  */
+  case 13:
+#line 118 "projet.bison" /* yacc.c:1646  */
     {(yyvsp[0].adresse).ic_goto = ic;}
 #line 1467 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 20:
-#line 112 "projet.bison" /* yacc.c:1646  */
-    {}
+  case 14:
+#line 119 "projet.bison" /* yacc.c:1646  */
+    {(yyvsp[-4].adresse).ic_false = ic; ins(JNZ, "0");}
 #line 1473 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 21:
-#line 113 "projet.bison" /* yacc.c:1646  */
+  case 15:
+#line 120 "projet.bison" /* yacc.c:1646  */
     {}
 #line 1479 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 22:
-#line 114 "projet.bison" /* yacc.c:1646  */
+  case 16:
+#line 121 "projet.bison" /* yacc.c:1646  */
     {}
 #line 1485 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 23:
-#line 115 "projet.bison" /* yacc.c:1646  */
-    {ins(JNZINV,to_string((yyvsp[-10].adresse).ic_goto));}
+  case 17:
+#line 122 "projet.bison" /* yacc.c:1646  */
+    {instructions[(yyvsp[-10].adresse).ic_false].second = to_string(ic+1); ins(JMP, to_string((yyvsp[-10].adresse).ic_goto));}
 #line 1491 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 24:
-#line 116 "projet.bison" /* yacc.c:1646  */
-    {(yyvsp[-7].adresse).ic_goto = ic; ins(FOR, (yyvsp[-5].nom)); ins(GET, (yyvsp[-5].nom)); ins(GETMAXFOR, to_string((yyvsp[-7].adresse).ic_goto)); ins(INF, "0"); (yyvsp[-7].adresse).ic_false = ic; ins(JNZ, "0");}
+  case 18:
+#line 124 "projet.bison" /* yacc.c:1646  */
+    {(yyvsp[0].adresse).ic_goto = ic;}
 #line 1497 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 25:
-#line 117 "projet.bison" /* yacc.c:1646  */
+  case 19:
+#line 125 "projet.bison" /* yacc.c:1646  */
     {}
 #line 1503 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 26:
-#line 118 "projet.bison" /* yacc.c:1646  */
+  case 20:
+#line 126 "projet.bison" /* yacc.c:1646  */
     {}
 #line 1509 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 27:
-#line 119 "projet.bison" /* yacc.c:1646  */
-    {ins(GET, (yyvsp[-11].nom)); ins(NUMBER, "1"); ins('+', "0"); ins(IDENTIFIER, (yyvsp[-11].nom)); ins(JMP, to_string((yyvsp[-13].adresse).ic_goto+1)); instructions[(yyvsp[-13].adresse).ic_false].second = to_string(ic);ins(GET, (yyvsp[-11].nom)); ins(NUMBER, "1"); ins('-', "0"); ins(IDENTIFIER, (yyvsp[-11].nom));}
+  case 21:
+#line 127 "projet.bison" /* yacc.c:1646  */
+    {}
 #line 1515 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 29:
-#line 122 "projet.bison" /* yacc.c:1646  */
-    {ins(IDENTIFIER, (yyvsp[-2].nom));}
+  case 22:
+#line 128 "projet.bison" /* yacc.c:1646  */
+    {ins(JNZINV,to_string((yyvsp[-10].adresse).ic_goto));}
 #line 1521 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 30:
-#line 123 "projet.bison" /* yacc.c:1646  */
-    {ins(FUNCNAME, (yyvsp[-4].nom)); ins(ADDPARAM, (yyvsp[-1].nom)); ins(FUNCNAME, (yyvsp[-4].nom)); ins(ADDRET, (yyvsp[-3].nom)); (yyvsp[-5].adresse).ic_goto = ic; ins(JMP, "0"); functions[(yyvsp[-4].nom)] = vector<double>(2,0); functions[(yyvsp[-4].nom)][0] = ic;}
+  case 23:
+#line 129 "projet.bison" /* yacc.c:1646  */
+    {(yyvsp[-7].adresse).ic_goto = ic; ins(FOR, (yyvsp[-5].nom)); ins(GET, (yyvsp[-5].nom)); ins(GETMAXFOR, to_string((yyvsp[-7].adresse).ic_goto)); ins(INF, "0"); (yyvsp[-7].adresse).ic_false = ic; ins(JNZ, "0");}
 #line 1527 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 31:
-#line 124 "projet.bison" /* yacc.c:1646  */
+  case 24:
+#line 130 "projet.bison" /* yacc.c:1646  */
     {}
 #line 1533 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 32:
-#line 125 "projet.bison" /* yacc.c:1646  */
-    {ins(FUNCNAME, (yyvsp[-8].nom));ins(RESETFUNC, "0");functions[(yyvsp[-8].nom)][1] = ic; ins(JMP, "0");instructions[(yyvsp[-9].adresse).ic_goto].second = to_string(ic);}
+  case 25:
+#line 131 "projet.bison" /* yacc.c:1646  */
+    {}
 #line 1539 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 33:
-#line 126 "projet.bison" /* yacc.c:1646  */
-    {ins(FUNCNAME, (yyvsp[-1].nom));ins(EXECFUNC, (yyvsp[0].nom));}
+  case 26:
+#line 132 "projet.bison" /* yacc.c:1646  */
+    {ins(GET, (yyvsp[-11].nom)); ins(NUMBER, "1"); ins('+', "0"); ins(IDENTIFIER, (yyvsp[-11].nom)); ins(JMP, to_string((yyvsp[-13].adresse).ic_goto+1)); instructions[(yyvsp[-13].adresse).ic_false].second = to_string(ic);ins(GET, (yyvsp[-11].nom)); ins(NUMBER, "1"); ins('-', "0"); ins(IDENTIFIER, (yyvsp[-11].nom));}
 #line 1545 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 34:
-#line 127 "projet.bison" /* yacc.c:1646  */
-    {ins(NUMBER, to_string(maxX)); ins(GET, plotVarName); ins(INF, "0"); (yyvsp[0].adresse).ic_false = ic; ins(JNZ, "0");}
+  case 28:
+#line 135 "projet.bison" /* yacc.c:1646  */
+    {ins(IDENTIFIER, (yyvsp[-2].nom));}
 #line 1551 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 35:
-#line 128 "projet.bison" /* yacc.c:1646  */
-    {}
+  case 29:
+#line 136 "projet.bison" /* yacc.c:1646  */
+    {ins(FUNCNAME, (yyvsp[-4].nom)); ins(ADDPARAM, "0"); (yyvsp[-5].adresse).ic_goto = ic; ins(JMP, "0"); functions[(yyvsp[-4].nom)] = vector<double>(2,0); functions[(yyvsp[-4].nom)][0] = ic;}
 #line 1557 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 36:
-#line 129 "projet.bison" /* yacc.c:1646  */
-    {ins(FUNCNAME, (yyvsp[0].nom));ins(LIM, "0");}
+  case 30:
+#line 137 "projet.bison" /* yacc.c:1646  */
+    {}
 #line 1563 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 37:
-#line 132 "projet.bison" /* yacc.c:1646  */
-    {ins(SUP, "0");}
+  case 31:
+#line 138 "projet.bison" /* yacc.c:1646  */
+    {instructions[(yyvsp[-9].adresse).ic_goto].second = to_string(ic);}
 #line 1569 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 38:
-#line 133 "projet.bison" /* yacc.c:1646  */
-    {ins(INF, "0");}
+  case 32:
+#line 139 "projet.bison" /* yacc.c:1646  */
+    {(yyvsp[0].adresse).ic_goto = ic; ins(GET, "maxX"); ins(GET, plotVarName); ins(SUP, "0"); (yyvsp[0].adresse).ic_false = ic; ins(JNZ, "0");}
 #line 1575 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 39:
-#line 134 "projet.bison" /* yacc.c:1646  */
-    {ins(EQUAL, "0");}
+  case 33:
+#line 140 "projet.bison" /* yacc.c:1646  */
+    {ins(PRINTFUNC, "0"); ins(GET, "step"); ins(GET, plotVarName); ins('+', "0"); ins(IDENTIFIER, plotVarName); ins(JMP, to_string((yyvsp[-2].adresse).ic_goto)); instructions[(yyvsp[-2].adresse).ic_false].second = to_string(ic); ins(PLOTGRAPH, "0");}
 #line 1581 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 40:
-#line 135 "projet.bison" /* yacc.c:1646  */
-    {ins(DIFF, "0");}
+  case 34:
+#line 141 "projet.bison" /* yacc.c:1646  */
+    {ins(FUNCNAME, (yyvsp[0].nom));ins(LIM, "0"); plotVarName = (yyvsp[0].nom);}
 #line 1587 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 41:
-#line 136 "projet.bison" /* yacc.c:1646  */
-    {ins(SUPEQ, "0");}
+  case 35:
+#line 142 "projet.bison" /* yacc.c:1646  */
+    {ins(IN, (yyvsp[0].nom));}
 #line 1593 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 42:
-#line 137 "projet.bison" /* yacc.c:1646  */
-    {ins(INFEQ, "0");}
+  case 36:
+#line 143 "projet.bison" /* yacc.c:1646  */
+    {ins(OUTPUT, "0");}
 #line 1599 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 43:
-#line 139 "projet.bison" /* yacc.c:1646  */
-    { ins('+', "0");}
+  case 37:
+#line 144 "projet.bison" /* yacc.c:1646  */
+    {ins(RESETFUNC, "0");}
 #line 1605 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 44:
-#line 140 "projet.bison" /* yacc.c:1646  */
-    { ins('-', "0");}
+  case 38:
+#line 145 "projet.bison" /* yacc.c:1646  */
+    {ins(FUNCNAME, (yyvsp[-1].nom));ins(EXECFUNC, "0");}
 #line 1611 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 45:
-#line 141 "projet.bison" /* yacc.c:1646  */
-    { ins('*', "0");}
+  case 39:
+#line 148 "projet.bison" /* yacc.c:1646  */
+    {ins(SUP, "0");}
 #line 1617 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 46:
-#line 142 "projet.bison" /* yacc.c:1646  */
-    { ins('/', "0");}
+  case 40:
+#line 149 "projet.bison" /* yacc.c:1646  */
+    {ins(INF, "0");}
 #line 1623 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 47:
-#line 143 "projet.bison" /* yacc.c:1646  */
-    { }
+  case 41:
+#line 150 "projet.bison" /* yacc.c:1646  */
+    {ins(EQUAL, "0");}
 #line 1629 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 48:
-#line 144 "projet.bison" /* yacc.c:1646  */
-    { }
+  case 42:
+#line 151 "projet.bison" /* yacc.c:1646  */
+    {ins(DIFF, "0");}
 #line 1635 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 49:
-#line 145 "projet.bison" /* yacc.c:1646  */
-    { ins(NUMBER, to_string((yyvsp[0].valeur)));}
+  case 43:
+#line 152 "projet.bison" /* yacc.c:1646  */
+    {ins(SUPEQ, "0");}
 #line 1641 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
-  case 50:
-#line 146 "projet.bison" /* yacc.c:1646  */
-    {ins(GET, (yyvsp[0].nom));}
+  case 44:
+#line 153 "projet.bison" /* yacc.c:1646  */
+    {ins(INFEQ, "0");}
 #line 1647 "projet.bison.cpp" /* yacc.c:1646  */
     break;
 
+  case 45:
+#line 155 "projet.bison" /* yacc.c:1646  */
+    { ins('+', "0");}
+#line 1653 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
 
-#line 1651 "projet.bison.cpp" /* yacc.c:1646  */
+  case 46:
+#line 156 "projet.bison" /* yacc.c:1646  */
+    { ins('-', "0");}
+#line 1659 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 47:
+#line 157 "projet.bison" /* yacc.c:1646  */
+    { ins('*', "0");}
+#line 1665 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 48:
+#line 158 "projet.bison" /* yacc.c:1646  */
+    { ins('/', "0");}
+#line 1671 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 49:
+#line 159 "projet.bison" /* yacc.c:1646  */
+    {ins('^', "0");}
+#line 1677 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 50:
+#line 160 "projet.bison" /* yacc.c:1646  */
+    { }
+#line 1683 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 51:
+#line 161 "projet.bison" /* yacc.c:1646  */
+    { }
+#line 1689 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 52:
+#line 162 "projet.bison" /* yacc.c:1646  */
+    {ins(NUMBER, to_string((yyvsp[0].valeur)));}
+#line 1695 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 53:
+#line 163 "projet.bison" /* yacc.c:1646  */
+    {ins(GET, (yyvsp[0].nom));}
+#line 1701 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 54:
+#line 164 "projet.bison" /* yacc.c:1646  */
+    { ins(EXP, "0");}
+#line 1707 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 55:
+#line 165 "projet.bison" /* yacc.c:1646  */
+    { ins(SIN, "0");}
+#line 1713 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 56:
+#line 166 "projet.bison" /* yacc.c:1646  */
+    { ins(COS, "0");}
+#line 1719 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 57:
+#line 167 "projet.bison" /* yacc.c:1646  */
+    { ins(TAN, "0");}
+#line 1725 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 58:
+#line 168 "projet.bison" /* yacc.c:1646  */
+    {ins(FUNCNAME, (yyvsp[-1].nom));ins(EXECFUNC, "0");}
+#line 1731 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 59:
+#line 173 "projet.bison" /* yacc.c:1646  */
+    { }
+#line 1737 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+  case 60:
+#line 174 "projet.bison" /* yacc.c:1646  */
+    {ins(FUNCNAME, (yyvsp[0].nom));}
+#line 1743 "projet.bison.cpp" /* yacc.c:1646  */
+    break;
+
+
+#line 1747 "projet.bison.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1875,7 +1971,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 148 "projet.bison" /* yacc.c:1906  */
+#line 180 "projet.bison" /* yacc.c:1906  */
 
 
 // Pour imprimer le code généré de manière plus lisible 
@@ -1885,6 +1981,7 @@ string nom(int instruction){
   case '+'     : return "+";
   case '/'     : return "/";
   case '*'     : return "*";
+  case '^'      :return "^";
   case NUMBER  : return "NUM";
   case OUT     : return "OUT";
   case JNZ     : return "JNZ";   // Jump if not zero
@@ -1910,6 +2007,15 @@ string nom(int instruction){
   case EXECFUNC : return  "EXECFUNC";
   case FOR:       return  "FOR";
   case LIM:        return   "LIM";
+  case EXP     : return "EXP"; 
+  case SIN     : return "SIN"; 
+  case COS     : return "COS"; 
+  case TAN     : return "TAN";
+  case IN:        return "IN"; 
+  case OUTPUT:    return "OUTPUT"; 
+  case  PRINTFUNC:  return "PRINTFUNC";
+  case PLOTGRAPH:   return  "PLOTGRAPH";
+  case  RETFUNC:    return  "RETFUNC";
   default  : return to_string (instruction);
    }
 }
@@ -1938,10 +2044,14 @@ double depilerDouble(vector<string> &pile){
 
 void run_program(){
   vector<string> pile; 
-  double x,y;
+  double x,y,z; 
   string var;
+  plotVarName = "";
+  funcPlotX.clear();
+  funcPlotY.clear();
   variables.clear();
   ic = 0;
+
   cout << "===== EXECUTION =====" << endl;
   while ( ic < instructions.size() ){
     auto ins = instructions[ic];
@@ -1957,6 +2067,7 @@ void run_program(){
       case '*':{
         x = depilerDouble(pile);
         y = depilerDouble(pile);
+
         pile.push_back(to_string(y*x));
         ic++;
       }     
@@ -1975,6 +2086,14 @@ void run_program(){
         x = depilerDouble(pile);
         y = depilerDouble(pile);
         pile.push_back(to_string(y/x));
+        ic++;
+      }
+      break;
+
+      case '^': {
+        x = depilerDouble(pile);
+        y = depilerDouble(pile);
+        pile.push_back(to_string(pow(y,x)));
         ic++;
       }
       break;
@@ -2002,7 +2121,16 @@ void run_program(){
       }  
       break;
 
-      case OUT:{
+      case IN:{ 
+        cout << ins.second <<": ";
+        cin>>x; 
+        variables[ins.second] = x;
+        pile.push_back(to_string(x)); 
+        ic++; 
+      } 
+      break; 
+ 
+      case OUTPUT:{ 
         if(!pile.empty()){
           var = depiler(pile);
           if(is_number(instructions[ic-1].second)){
@@ -2011,9 +2139,9 @@ void run_program(){
             cout << instructions[ic-1].second << ": " << var << endl;
           }
         }
-        ic++;
-      }
-      break;
+        ic++; 
+      } 
+      break; 
 
       case IDENTIFIER :{
         x = depilerDouble(pile);
@@ -2029,16 +2157,11 @@ void run_program(){
         ic++;
       }
       break;
-
-      case GETFUNC:
-        var = ins.second;
-        instructions[functions[var][1]].second = to_string(ic+1);
-        ic = functions[var][0];
-      break;
       
      case SUP:{
       x = depilerDouble(pile);
       y = depilerDouble(pile);
+
       if(y>x){
           pile.push_back("1");
       }else{
@@ -2051,7 +2174,6 @@ void run_program(){
       case INF:{
         x = depilerDouble(pile);
         y = depilerDouble(pile);
-        cout << y << " " << x << endl;
         if(y<x){
           pile.push_back("1");
         }else{
@@ -2109,6 +2231,34 @@ void run_program(){
      }  
       break;
 
+      case EXP : {
+        x = depilerDouble(pile); 
+        pile.push_back(to_string(exp(x))); 
+        ic++; 
+      }
+      break; 
+ 
+      case SIN : {
+        x = depilerDouble(pile); 
+        pile.push_back(to_string(sin(x*M_PI/180))); 
+        ic++; 
+      }   
+      break; 
+ 
+      case COS : {
+        x = depilerDouble(pile); 
+        pile.push_back(to_string(cos(x))); 
+        ic++; 
+      }  
+      break; 
+ 
+      case TAN : {
+        x = depilerDouble(pile); 
+        pile.push_back(to_string(sin(x)/cos(x))); 
+        ic++;
+      } 
+      break; 
+
       case FOR:{
         double maxVal = depilerDouble(pile);
         double minVal = depilerDouble(pile);
@@ -2130,20 +2280,17 @@ void run_program(){
 
 
       case RESETFUNC: {
-        string funcName = depiler(pile);
-        vector<pair<string, double>> returnedVar;
-        pair<string, double> tmpPair;
-        for(auto c: funcReturn[funcName]){
-            tmpPair.first = c;
-            tmpPair.second = variables[c];
-            returnedVar.push_back(tmpPair);
+        string funcName = funcNames[funcNames.size() - 1];
+        var = depiler(pile);
+      
+        if(is_number(var)){
+            pile.push_back(var);
+        }else if(variables.find(var) != variables.end()){
+          cout << var << endl;
+          pile.push_back(to_string(variables[var]));
         }
-
         variables = varFunc[varFunc.size()-1];
-        
-        for(auto c: returnedVar){
-            variables[c.first] = c.second;
-        }
+        varFunc.pop_back();
         ic = toGoAfterFunc[toGoAfterFunc.size()-1];
         toGoAfterFunc.pop_back();
       }
@@ -2157,90 +2304,81 @@ void run_program(){
 
       case ADDPARAM:{
         string funcName = depiler(pile);
-        string param = ins.second.substr(1,ins.second.length()-2);
-        string curParam;
-        int curCommaPos = param.find(",");
-        while(curCommaPos != string::npos){
-          curParam = param.substr(0,curCommaPos);
-          if(!is_number(string(1,curParam.at(0)))){
-            funcParameters[funcName].push_back(curParam);
-          }
-          param = param.substr(curCommaPos+1,param.length());
-          curCommaPos = param.find(",");
+        while(!pile.empty()){
+          funcParameters[funcName].push_back(depiler(pile));
         }
-        if(!is_number(string(1,param.at(0)))){
-            funcParameters[funcName].push_back(param);
-        }
+        functions[funcName][1] = funcParameters[funcName].size();
         ic++;
       }  
       break;
-      
-      case ADDRET:{
-        string funcName = depiler(pile);
-        string param = ins.second.substr(1,ins.second.length()-2);
-        string curParam;
-        int curCommaPos = param.find(",");
-        while(curCommaPos != string::npos){
-          funcReturn[funcName].push_back(param.substr(0,curCommaPos));
-          param = param.substr(curCommaPos+1,param.length());
-          curCommaPos = param.find(",");
-        }
-        funcReturn[funcName].push_back(param);
-        ic++;
-      }  
-      break;
+    
 
       case EXECFUNC:{
         string funcName = depiler(pile);
-        string param = ins.second.substr(1,ins.second.length()-2);
-        string curParam;
+        if(pile.size() >= functions[funcName][1]){
+          vector<double> parameters;
+          for(auto i =0; i < functions[funcName][1]; i++){
+            var = depiler(pile);
+            if(is_number(var)){
+            parameters.push_back(stof(var));
+            }else if(variables.find(var) != variables.end()){
+              parameters.push_back(variables[var]);
+            }
 
-        int curCommaPos = param.find(",");
-
-        vector<double> parameters;
-
-        while(curCommaPos != string::npos){
-          curParam = param.substr(0,curCommaPos);
-          if(is_number(curParam)){
-            parameters.push_back(atof(curParam.c_str()));
-          }else if(variables.find(curParam) != variables.end()){
-            parameters.push_back(variables[curParam]);
+            if(parameters.size() == funcParameters[funcName].size()){
+              varFunc.push_back(variables);
+              for(auto i = 0; i < parameters.size(); i++){
+                variables[funcParameters[funcName][i]] = parameters[i];
+              }
+              toGoAfterFunc.push_back(ic+1);
+              ic = functions[funcName][0];
+              funcNames.push_back(funcName);
+              
+            }else{
+              ic++;
+            }
           }
-          param = param.substr(curCommaPos+1, param.length());
-          curCommaPos = param.find(",");
-        }
-
-        if(is_number(param)){
-           parameters.push_back(atof(param.c_str()));
-        }else if(variables.find(param) != variables.end()){
-            parameters.push_back(variables[param]);
-        }
-        if(parameters.size() == funcParameters[funcName].size()){
-          varFunc.push_back(variables);
-          for(int i =0; i < parameters.size(); i++){
-            variables[funcParameters[funcName][i]] = parameters[i];
-          }
-          toGoAfterFunc.push_back(ic+1);
-          ic=functions[funcName][0];
         }else{
           ic++;
         }
-      }     
-      break;
-
-      case FUNCEXP:{
-        pile.push_back(ins.second);
-        ic++;
-      }
+      }   
       break;
 
       case LIM:{
         plotVarName = depiler(pile);
-        cout << plotVarName << endl;
         step = depilerDouble(pile);
+
         maxX = depilerDouble(pile);
+        variables["maxX"] = maxX;
+
         minX = depilerDouble(pile);
         variables[plotVarName] = minX;
+
+        variables["step"] = (maxX-minX)/step;
+
+        ic++;
+      }
+      break;
+
+      case PLOTGRAPH:{
+        sf::VertexArray vertexPoints(sf::LinesStrip, funcPlotX.size());
+        for(int i = 0; i < funcPlotX.size(); i++){
+          vertexPoints[i].position = sf::Vector2f(funcPlotX[i], funcPlotY[i]);
+        }
+        variables["maxX"] = maxX;
+        variables[plotVarName] = minX;
+        window.draw(vertexPoints);
+        variables["step"] = (maxX-minX)/step;
+        funcPlotX.clear();
+        funcPlotY.clear();
+        ic++;
+      }
+      break;
+
+      case PRINTFUNC:{
+        funcPlotX.push_back(variables[plotVarName]+window.getSize().x/2);
+        x = depilerDouble(pile);
+        funcPlotY.push_back(-x+window.getSize().y/2);
         ic++;
       }
       break;
@@ -2276,9 +2414,34 @@ int main(int argc, char **argv) {
     yyin = stdin;
     cout << stdin << endl;
   }
+
   yyparse();
+
   print_program();
 
   run_program();
+  sf::VertexArray vertexPoints(sf::LinesStrip, 2);
+          vertexPoints[0].position = sf::Vector2f(0, window.getSize().y/2);
+          vertexPoints[1].position = sf::Vector2f(window.getSize().x, window.getSize().y/2);
+  window.draw(vertexPoints);
+
+          vertexPoints[0].position = sf::Vector2f(window.getSize().x/2, 0);
+          vertexPoints[1].position = sf::Vector2f(window.getSize().x/2, window.getSize().y);
+  window.draw(vertexPoints);
+  window.display();
+  //  while (window.isOpen())
+  //   {
+  //       // on traite tous les évènements de la fenêtre qui ont été générés depuis la dernière itération de la boucle
+  //       sf::Event event;
+  //       while (window.pollEvent(event))
+  //       {
+  //           // fermeture de la fenêtre lorsque l'utilisateur le souhaite
+  //           if (event.type == sf::Event::Closed)
+  //               window.close();
+            
+  //       }
+
+        
+  //   }
 
 }

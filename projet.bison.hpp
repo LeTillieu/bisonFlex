@@ -77,7 +77,16 @@ extern int yydebug;
     FUNCEXP = 287,
     PLOT = 288,
     PRINT = 289,
-    LIM = 290
+    LIM = 290,
+    PLOTGRAPH = 291,
+    PRINTFUNC = 292,
+    EXP = 293,
+    SIN = 294,
+    COS = 295,
+    TAN = 296,
+    IN = 297,
+    OUTPUT = 298,
+    RETFUNC = 299
   };
 #endif
 
@@ -86,13 +95,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 45 "projet.bison" /* yacc.c:1909  */
+#line 50 "projet.bison" /* yacc.c:1909  */
 
   double valeur;
   char nom[50];
   t_adresse adresse;
 
-#line 96 "projet.bison.hpp" /* yacc.c:1909  */
+#line 105 "projet.bison.hpp" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
