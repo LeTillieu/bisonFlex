@@ -1,6 +1,6 @@
-#line 2 "projet.flex.cpp"
+#line 1 "projet.flex.cpp"
 
-#line 4 "projet.flex.cpp"
+#line 3 "projet.flex.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -562,8 +562,8 @@ typedef struct adr {
 
 using namespace std;
 
+#line 565 "projet.flex.cpp"
 #line 566 "projet.flex.cpp"
-#line 567 "projet.flex.cpp"
 
 #define INITIAL 0
 
@@ -783,7 +783,7 @@ YY_DECL
 #line 17 "projet.flex"
 
 
-#line 787 "projet.flex.cpp"
+#line 786 "projet.flex.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -972,7 +972,7 @@ YY_RULE_SETUP
 #line 52 "projet.flex"
 ECHO;
 	YY_BREAK
-#line 976 "projet.flex.cpp"
+#line 975 "projet.flex.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

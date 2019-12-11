@@ -18,6 +18,7 @@
   map<string, vector<string>> funcReturn; //name of return of each func
   vector<map<string, double>> varFunc; //variables to reset after function
   map<int, pair<double, double>> forLoop;
+  map<string, vector<double>> arrays;
 vector<string> funcNames;
   vector<double> funcPlotX;
   vector<double> funcPlotY;
@@ -97,6 +98,7 @@ vector<string> funcNames;
 %token IN 
 %token OUTPUT 
 %token RETFUNC
+%token ARRAY
 
 %left '+' '-'     /* associativité à gauche */
 %left '*' '/'     /* associativité à gauche */
@@ -143,6 +145,7 @@ instruction : SI                     {}
             |OUTPUT expression {ins(OUTPUT, "0");} 
             |RETFUNC expression              {ins(RESETFUNC, "0");}
             |IDENTIFIER expression           {ins(FUNCNAME, $1);ins(EXECFUNC, "0");}
+            |IDENTIFIER '=' '[' expression ']' {ins(ARRAY, "0");}
             ;
 
 condition: expression '>' expression      {ins(SUP, "0");}
@@ -584,6 +587,15 @@ void run_program(){
         funcPlotX.push_back(variables[plotVarName]+window.getSize().x/2);
         x = depilerDouble(pile);
         funcPlotY.push_back(-x+window.getSize().y/2);
+        ic++;
+      }
+      break;
+
+      case ARRAY:{
+        var = depiler(pile);
+        while(!pile.empty()){
+          arrays[var].push_back(depilerDouble(pile));
+        }
         ic++;
       }
       break;
